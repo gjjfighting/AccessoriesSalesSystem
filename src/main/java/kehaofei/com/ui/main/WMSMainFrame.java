@@ -1,6 +1,5 @@
 package kehaofei.com.ui.main;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -10,78 +9,37 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.SystemColor;
 import java.awt.Toolkit;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyVetoException;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map.Entry;
-
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
-
 import kehaofei.com.mybatisfactory.SpringBeanFactory;
 import kehaofei.com.ui.panel.BtnMenuGroupPanel;
-import kehaofei.com.ui.wmspanel.GoodsInfoWindow;
 import kehaofei.com.ui.wmspanel.SalesTicketInfoWindow;
 import kehaofei.com.utils.Constant_Properties;
-import kehaofei.com.utils.ControlFactory;
-
 import org.apache.log4j.Logger;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.border.FlatInnerBorderPainter;
-import org.jvnet.substance.border.StandardBorderPainter;
-import org.jvnet.substance.button.ClassicButtonShaper;
-import org.jvnet.substance.button.StandardButtonShaper;
-import org.jvnet.substance.painter.GlassGradientPainter;
-import org.jvnet.substance.painter.StandardGradientPainter;
-import org.jvnet.substance.skin.EbonyHighContrastSkin;
-import org.jvnet.substance.skin.EmeraldDuskSkin;
-import org.jvnet.substance.skin.FindingNemoSkin;
-import org.jvnet.substance.skin.NebulaBrickWallSkin;
-import org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel;
-import org.jvnet.substance.theme.SubstanceBarbyPinkTheme;
-import org.jvnet.substance.theme.SubstanceBottleGreenTheme;
-import org.jvnet.substance.theme.SubstanceEbonyTheme;
-import org.jvnet.substance.title.FlatTitlePainter;
-import org.jvnet.substance.title.MatteHeaderPainter;
-import org.jvnet.substance.watermark.SubstanceBinaryWatermark;
-import org.jvnet.substance.watermark.SubstanceStripeWatermark;
-
-import com.jgoodies.looks.windows.WindowsLookAndFeel;
-
-import ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel;
-import ch.randelshofer.quaqua.util.Methods;
 
 /**
  * 
