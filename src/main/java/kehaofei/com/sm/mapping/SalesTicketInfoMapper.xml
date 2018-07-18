@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+		"-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kehaofei.com.sm.mapping.SalesTicketInfoMapper">
+
+    <!-- 查询所有SalesTicketInfo(商品信息) -->
+    <select id="queryAll" resultType="SalesTicketInfo" >
+        <![CDATA[
+        	SELECT * FROM xsd
+        ]]>
+    </select>
+    
+    <!-- 获取最后一条SalesTicketInfo -->
+    <select id="queryLast" resultType="SalesTicketInfo" >
+        <![CDATA[
+        	select top 1 xsd.* from xsd order by xs_hao desc
+        ]]>
+    </select>
+    
+    <!-- 查询今日订单 -->
+    <select id="getXSKeyList" parameterType="SalesTicketInfo" resultType="SalesTicketInfo">
+		<![CDATA[
+			select * from xsd where xs_hao like '%${xs_hao}%' order by xs_hao desc
+		]]>
+	</select>
+    
+    <!-- 新增客户信息数据 -->
+    <insert id="save" parameterType="SalesTicketInfo" useGeneratedKeys="true" keyProperty="xs_hao">
+		<![CDATA[
+			insert into xsd(
+				xs_hao,
+				kehu_no,
+				xs_date,	
+				xs_user,	
+				xs_moneyall) 
+			values(
+				#{xs_hao},
+				#{kehu_no},
+				#{xs_date},	
+				#{xs_user},	
+				#{xs_moneyall})
+		]]>
+	</insert>
+	
+	<!-- 更新销售信息数据 -->
+    <update id="update" parameterType="SalesTicketInfo">
+		<![CDATA[
+			UPDATE xsd   
+		]]>	
+			<trim prefix="set" suffixOverrides=",">
+			  <if test="kehu_no != null">kehu_no=#{kehu_no,jdbcType=VARCHAR},</if>
+			  <if test="xs_date != null">xs_date=#{xs_date,jdbcType=VARCHAR}, </if>
+			  <if test="xs_user != null">xs_user=#{xs_user,jdbcType=VARCHAR}, </if>
+			  <if test="xs_moneyall != null">xs_moneyall=#{xs_moneyall,jdbcType=DOUBLE}, </if>					
+			</trim>
+		<![CDATA[			
+			 WHERE xs_hao=#{xs_hao,jdbcType=VARCHAR} 
+		]]>
+	</update>
+	
+	<select id="queryBySome" parameterType="SalesTicketInfo" resultType="SalesTicketInfo">
+		<![CDATA[
+			SELECT * FROM xsd,kehu where 1=1 AND kehu.kehu_no=xsd.kehu_no  
+		]]>
+			<if test="xs_hao != null"> AND xsd.xs_hao like '%${xs_hao}%' </if>
+		<![CDATA[
+			order by xsd.xs_hao ASC
+		]]>
+	</select>
+	<!-- <resultMap type="kehaofei.com.sm.model.SalesTicketInfoModel" id="SalesTicketMap">
+	
+        <id property="xs_hao" column="xsd.xs_hao"/>
+        <result property="kehu_no" column="xsd.kehu_no"/>
+        <result property="kehu_name" column="kehu_name"/>
+        <result property="kehu_pinyin" column="kehu_py"/>
+        <result property="kehu_tel" column="tel"/>
+        <result property="xs_date" column="xsd.xs_date"/>
+        <result property="xs_user" column="xs_user"/>
+        <result property="xs_moneyall" column="xs_moneyall"/>
+    </resultMap>   -->
+	
+	<!-- 查询树形结构的日期时间 -->
+	<select id="queryDate" parameterType="string" resultType="java.util.List" >
+		<!-- <![CDATA[
+			SELECT FORMAT(xsd.xs_date,"yyyy") FROM xsd WHERE 1=1 group by FORMAT(xsd.xs_date,"yyyy") order by FORMAT(xsd.xs_date,"yyyy") 
+		]]> -->
+		
+		<![CDATA[
+			SELECT xsd.xs_hao FROM xsd WHERE 1=1 group by xsd.xs_hao 
+		]]>
+		
+	</select>
+	
+	
+	<!-- 根据条件查询销售单信息 -->
+	<select id="getInfoById" parameterType="SalesTicketInfo" resultMap="SalesTicketMap">
+		<![CDATA[
+			SELECT * FROM xsd,xs,kehu where 1=1 AND xsd.xs_hao = xs.xs_hao AND kehu.kehu_no=xsd.kehu_no  
+		]]>
+			<if test="xs_hao != null"> AND xsd.xs_hao like '%${xs_hao}%' </if>
+	</select>
+	<resultMap type="kehaofei.com.sm.model.SalesTicketInfoModel" id="SalesTicketMap">
+	
+        <id property="xs_hao" column="xsd.xs_hao"/>
+        <result property="kehu_no" column="xsd.kehu_no"/>
+        <result property="kehu_name" column="kehu_name"/>
+        <result property="kehu_pinyin" column="kehu_py"/>
+        <result property="kehu_tel" column="tel"/>
+        <result property="xs_date" column="xsd.xs_date"/>
+        <result property="xs_user" column="xs_user"/>
+        <result property="xs_moneyall" column="xs_moneyall"/>
+        
+        <!-- ofType指定SalesTicketDetailsModel集合中的对象类型 -->
+        <collection property="salesTicketDetails" ofType="kehaofei.com.sm.model.SalesTicketDetailsModel">
+            <id property="xs_no" column="xs_no"/>
+            <result property="xs_hao" column="xs.xs_hao"/>
+            <result property="peij_no" column="peij_no"/>
+            <result property="ck_name" column="ck_name"/>
+            <result property="xs_name" column="xs_name"/>
+            
+             <result property="xs_code" column="xs_code"/>
+             <result property="xs_brand" column="xs_brand"/>
+             <result property="xs_unit" column="xs_unit"/>
+             <result property="xs_price" column="xs_price"/>
+             <result property="xs_num" column="xs_num"/>
+             <result property="xs_money" column="xs_money"/>
+             <result property="comment" column="comment"/>
+             <result property="xs_place" column="xs_place"/>
+             <result property="xs_spec" column="xs_spec"/>
+             <result property="xs_model" column="xs_model"/>
+             <result property="xs_roll" column="xs_roll"/>
+             <result property="xs_pjlb" column="xs_pjlb"/>
+             <result property="xs_date" column="xs.xs_date"/>
+             <result property="xs_oldprice" column="xs_oldprice"/>
+             
+        </collection>
+    </resultMap>
+    
+</mapper>

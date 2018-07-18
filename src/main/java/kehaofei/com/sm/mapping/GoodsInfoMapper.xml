@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+		"-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kehaofei.com.sm.mapping.GoodsInfoMapper">
+
+    <!-- 查询所有GoodsInfo(商品信息) -->
+    <select id="queryAll" resultType="GoodsInfo" >
+        <![CDATA[
+        	SELECT * FROM peij WHERE peij_del='0'
+        ]]>
+    </select>
+    
+    <!-- 查询所有GoodsInfo(商品信息) -->
+    <select id="queryLast" resultType="GoodsInfo" >
+        <![CDATA[
+        	select top 1 peij.* from peij order by peij_no desc
+        ]]>
+    </select>
+    
+    <!-- 新增商品信息数据 -->
+    <insert id="save" parameterType="GoodsInfo" useGeneratedKeys="true" keyProperty="peij_no">
+		<![CDATA[
+			insert into peij(
+				peij_no,
+				peij_py,	
+				peij_name,
+				peij_lb,	
+				code,	
+				brand,	
+				unit,	
+				in_price,
+				out_price1,
+				outprice2,
+				outprice3,
+				spec,
+				model,
+				place,
+				export,
+				pernum,
+				pack,
+				material,
+				roll,
+				jinyong,
+				comment,
+				peij_del) 
+			values(
+				#{peij_no},
+				#{peij_py},	
+				#{peij_name},
+				#{peij_lb},	
+				#{code},	
+				#{brand},	
+				#{unit},	
+				#{in_price},
+				#{out_price1},
+				#{out_price2},
+				#{out_price3},
+				#{spec},
+				#{model},
+				#{place},
+				#{export},
+				#{pernum},
+				#{pack},
+				#{material},
+				#{roll},
+				#{jinyong},
+				#{comment},
+				#{peij_del})
+		]]>
+	</insert>
+	
+	<!-- 更新商品信息数据 -->
+    <update id="update" parameterType="GoodsInfo">
+		<![CDATA[
+			UPDATE peij   
+		]]>	
+			<trim prefix="set" suffixOverrides=",">
+			  <if test="peij_py != null">peij_py=#{peij_py,jdbcType=VARCHAR},</if>
+			  <if test="peij_name != null">peij_name=#{peij_name,jdbcType=VARCHAR}, </if>
+			  <if test="peij_lb != null">peij_lb=#{peij_lb,jdbcType=VARCHAR}, </if>
+			  <if test="code != null">code=#{code,jdbcType=VARCHAR}, </if>
+			  <if test="brand != null">brand=#{brand,jdbcType=VARCHAR}, </if>
+			  <if test="unit != null">unit=#{unit,jdbcType=VARCHAR}, </if>
+			  <if test="in_price != null">in_price=#{in_price,jdbcType=DOUBLE}, </if>
+			  <if test="out_price1 != null">out_price1=#{out_price1,jdbcType=DOUBLE},</if>
+			  <if test="jinyong != null">jinyong=#{jinyong,jdbcType=VARCHAR},</if>
+			  <if test="peij_del != null">peij_del=#{peij_del,jdbcType=VARCHAR},</if>		
+				
+			</trim>
+		<![CDATA[			
+			 WHERE peij_no=#{peij_no,jdbcType=VARCHAR} 
+		]]>
+	</update>
+	
+	<!-- 删除指定主键对应的数据 逻辑删除 -->
+	<update id="delete" parameterType="string">
+		<!-- <![CDATA[
+			delete from peij where peij_no=#{peij_no}
+		]]> -->
+		
+		<![CDATA[
+			UPDATE peij set peij_del="1" WHERE peij_no=#{peij_no,jdbcType=VARCHAR} 
+		]]>
+	</update>
+	
+	<select id="queryById" parameterType="string" resultType="GoodsInfo">
+		<![CDATA[
+			select * from peij where peij_no=#{peij_no}
+		]]>
+	</select>
+	
+	<!-- 传入实体查询信息 -->
+	<select id="queryBySome" parameterType="GoodsInfo" resultType="GoodsInfo">
+		<![CDATA[
+			SELECT * 
+			FROM peij 
+			WHERE 1=1 AND peij_del='0' 
+		]]>
+			<if test="peij_py != null"> AND peij_py like '%${peij_py}%' </if>
+			<if test="peij_name != null"> AND peij_name like '%${peij_name}%' </if>
+			<if test="peij_lb != null"> AND peij_lb like '%${peij_lb}%' </if>
+			<if test="code != null"> AND code like '%${code}%' </if>
+		
+	</select>
+	
+	<!-- 查询新增和更新时候 配件名称和类别是否已经存在 -->
+	<select id="queryRepeat" parameterType="GoodsInfo" resultType="GoodsInfo">
+		<![CDATA[
+			SELECT * 
+			FROM peij 
+			WHERE 1=1 AND peij_del='0' 
+		]]>
+		<if test="peij_no != null"><![CDATA[ AND peij_no<>#{peij_no} ]]> </if>
+		<if test="peij_name != null"> AND peij_name=#{peij_name} </if>
+		<if test="peij_lb != null"> AND peij_lb=#{peij_lb} </if>
+	</select>
+	
+	<!-- <update id="queryBySome" parameterType="ConcentratorMeterLibrary">
+		<![CDATA[
+			UPDATE concentrator_meter_library 
+			SET 
+				meter_conn_status=#{meter_conn_status,jdbcType=SMALLINT} 
+				
+			WHERE 1=1 
+				AND meter_number=#{meter_number,jdbcType=VARCHAR} 
+			
+		]]>
+	</update> -->
+    
+</mapper>

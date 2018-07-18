@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+		"-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kehaofei.com.sm.mapping.SalesTicketDetailsMapper">
+
+    <!-- 查询所有SalesTicketDetails(商品信息) -->
+    <select id="queryAll" resultType="SalesTicketDetails" >
+        <![CDATA[
+        	SELECT * FROM peij WHERE peij_del='0'
+        ]]>
+    </select>
+    
+    <!-- 新增商品信息数据 -->
+    <insert id="save" parameterType="SalesTicketDetails" useGeneratedKeys="true" keyProperty="xs_no">
+    
+		<![CDATA[
+			insert into xs(
+				xs_hao,
+				peij_no,
+				ck_name,	
+				xs_name,	
+				xs_code,	
+				xs_brand,	
+				xs_unit,	
+				xs_price,
+				xs_num,
+				xs_money,
+				comment,
+				xs_place,
+				xs_spec,
+				xs_model,
+				xs_roll,
+				xs_pjlb,
+				xs_date,
+				xs_oldprice) 
+			values(
+				#{xs_hao},
+				#{peij_no},
+				#{ck_name},	
+				#{xs_name},	
+				#{xs_code},	
+				#{xs_brand},	
+				#{xs_unit},	
+				#{xs_price},
+				#{xs_num},
+				#{xs_money},
+				#{comment},
+				#{xs_place},
+				#{xs_spec},
+				#{xs_model},
+				#{xs_roll},
+				#{xs_pjlb},
+				#{xs_date},
+				#{xs_oldprice})
+		]]>
+		
+	</insert>
+	
+	<!-- 批量插入明细数据 --><!-- useGeneratedKeys="true"  keyProperty="xs_no" -->
+	<insert id="batchSave" parameterType="java.util.List" >
+    
+		<![CDATA[
+			insert into xs(
+				xs_hao,
+				peij_no,
+				ck_name,	
+				xs_name,	
+				xs_code,	
+				xs_brand,	
+				xs_unit,	
+				xs_price,
+				xs_num,
+				xs_money,
+				comment,
+				xs_place,
+				xs_spec,
+				xs_model,
+				xs_roll,
+				xs_pjlb,
+				xs_date,
+				xs_oldprice) 
+			values
+		]]>	
+		<foreach collection="list" index="index" item="item" separator="," >  
+	      (
+			#{item.xs_hao},
+			#{item.peij_no},
+			#{item.ck_name},	
+			#{item.xs_name},	
+			#{item.xs_code},	
+			#{item.xs_brand},	
+			#{item.xs_unit},	
+			#{item.xs_price},
+			#{item.xs_num},
+			#{item.xs_money},
+			#{item.comment},
+			#{item.xs_place},
+			#{item.xs_spec},
+			#{item.xs_model},
+			#{item.xs_roll},
+			#{item.xs_pjlb},
+			#{item.xs_date},
+			#{item.xs_oldprice})
+	    </foreach>
+	</insert>
+	
+	
+	<!-- 更新商品信息数据 -->
+    <update id="update" parameterType="SalesTicketDetails">
+		<![CDATA[
+			UPDATE xs   
+		]]>	
+			<trim prefix="set" suffixOverrides=",">
+			  <if test="xs_hao != null">xs_hao=#{xs_hao,jdbcType=VARCHAR},</if>
+			  <if test="peij_no != null">peij_no=#{peij_no,jdbcType=VARCHAR}, </if>
+			  <if test="ck_name != null">ck_name=#{ck_name,jdbcType=VARCHAR}, </if>
+			  <if test="xs_name != null">xs_name=#{xs_name,jdbcType=VARCHAR}, </if>
+			  <if test="xs_code != null">xs_code=#{xs_code,jdbcType=VARCHAR}, </if>
+			  <if test="xs_brand != null">xs_brand=#{xs_brand,jdbcType=VARCHAR}, </if>
+			  <if test="xs_unit != null">xs_unit=#{xs_unit,jdbcType=VARCHAR}, </if>			  
+			  <if test="xs_price != null">xs_price=#{xs_price,jdbcType=DOUBLE}, </if>
+			  <if test="xs_num != null">xs_num=#{xs_num,jdbcType=INTEGER}, </if>
+			  <if test="xs_money != null">xs_money=#{xs_money,jdbcType=DOUBLE},</if>
+			  <if test="comment != null">comment=#{comment,jdbcType=VARCHAR},</if>
+			  <if test="xs_place != null">xs_place=#{xs_place,jdbcType=VARCHAR},</if>
+			  <if test="xs_spec != null">xs_spec=#{xs_spec,jdbcType=VARCHAR},</if>
+			  <if test="xs_model != null">xs_model=#{xs_model,jdbcType=VARCHAR},</if>
+			  <if test="xs_roll != null">xs_roll=#{xs_roll,jdbcType=VARCHAR},</if>
+			  <if test="xs_pjlb != null">xs_pjlb=#{xs_pjlb,jdbcType=VARCHAR},</if>
+			  <if test="xs_date != null">xs_date=#{xs_date,jdbcType=VARCHAR},</if>
+			  <if test="xs_oldprice != null">xs_oldprice=#{xs_oldprice,jdbcType=DOUBLE},</if>		
+				
+			</trim>
+		<![CDATA[			
+			 WHERE xs_no=#{xs_no,jdbcType=INTEGER} 
+		]]>
+	</update>
+	
+	<!-- 删除指定主键对应的数据 逻辑删除 -->
+	<update id="batchDelete" parameterType="int">
+		<![CDATA[
+			delete from xs where xs_no in 
+		]]>
+        <foreach item="xs_no" collection="array" open="(" separator="," close=")">
+            #{xs_no}
+        </foreach>
+		
+	</update>
+	<!-- <select id="queryById" parameterType="string" resultType="SalesTicketDetails">
+		<![CDATA[
+			select * from peij where peij_no=#{peij_no}
+		]]>
+	</select> -->
+	
+	<!-- 传入实体查询信息 -->
+	<!-- <select id="queryBySome" parameterType="SalesTicketDetails" resultType="SalesTicketDetails">
+		<![CDATA[
+			SELECT * 
+			FROM peij 
+			WHERE 1=1 AND peij_del='0' 
+		]]>
+			<if test="peij_py != null"> AND peij_py like '%${peij_py}%' </if>
+			<if test="peij_name != null"> AND peij_name like '%${peij_name}%' </if>
+			<if test="peij_lb != null"> AND peij_lb like '%${peij_lb}%' </if>
+			<if test="code != null"> AND code like '%${code}%' </if>
+		
+	</select> -->
+    
+</mapper>

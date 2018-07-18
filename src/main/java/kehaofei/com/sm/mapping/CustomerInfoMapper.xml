@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+		"-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kehaofei.com.sm.mapping.CustomerInfoMapper">
+
+    <!-- 查询所有CustomerInfo(商品信息) -->
+    <select id="queryAll" resultType="CustomerInfo" >
+        <![CDATA[
+        	SELECT * FROM kehu WHERE kehu_del='0'
+        ]]>
+    </select>
+    
+    <!-- 获取最后一条CustomerInfo(客户信息) -->
+    <select id="queryLast" resultType="CustomerInfo" >
+        <![CDATA[
+        	select top 1 kehu.* from kehu order by kehu_no desc
+        ]]>
+    </select>
+    
+    <!-- 新增客户信息数据 -->
+    <insert id="save" parameterType="CustomerInfo" useGeneratedKeys="true" keyProperty="kehu_no">
+		<![CDATA[
+			insert into kehu(
+				kehu_no,
+				kehu_py,	
+				kehu_name,
+				lxr,
+				tel,
+				sj,
+				leibie,
+				adr,
+				web,
+				mail,
+				cz,
+				bank,
+				province,
+				city,
+				comment,
+				kehu_del) 
+			values(
+				#{kehu_no},
+				#{kehu_py},	
+				#{kehu_name},
+				#{lxr},
+				#{tel},
+				#{sj},
+				#{leibie},
+				#{adr},
+				#{web},
+				#{mail},
+				#{cz},
+				#{bank},
+				#{province},
+				#{city},
+				#{comment},
+				#{kehu_del})
+		]]>
+	</insert>
+	
+	<!-- 更新客户信息数据 -->
+    <update id="update" parameterType="CustomerInfo">
+		<![CDATA[
+			UPDATE kehu   
+		]]>	
+			<trim prefix="set" suffixOverrides=",">
+			  <if test="kehu_py != null">kehu_py=#{kehu_py,jdbcType=VARCHAR},</if>
+			  <if test="kehu_name != null">kehu_name=#{kehu_name,jdbcType=VARCHAR}, </if>
+			  <if test="lxr != null">lxr=#{lxr,jdbcType=VARCHAR}, </if>
+			  <if test="tel != null">tel=#{tel,jdbcType=VARCHAR}, </if>
+			  <if test="sj != null">sj=#{sj,jdbcType=VARCHAR}, </if>
+			  <if test="leibie != null">leibie=#{leibie,jdbcType=VARCHAR}, </if>
+			  <if test="city != null">city=#{city,jdbcType=VARCHAR}, </if>
+			  <if test="web != null">web=#{web,jdbcType=VARCHAR},</if>
+			  <if test="mail != null">mail=#{mail,jdbcType=VARCHAR},</if>
+			  <if test="cz != null">cz=#{cz,jdbcType=VARCHAR},</if>
+			  <if test="bank != null">bank=#{bank,jdbcType=VARCHAR},</if>
+			  <if test="province != null">province=#{province,jdbcType=VARCHAR},</if>
+			  <if test="adr != null">adr=#{adr,jdbcType=VARCHAR},</if>
+			  <if test="comment != null">comment=#{comment,jdbcType=VARCHAR},</if>					
+			</trim>
+		<![CDATA[			
+			 WHERE kehu_no=#{kehu_no,jdbcType=VARCHAR} 
+		]]>
+	</update>
+	
+	<!-- 删除指定主键对应的数据 -->
+	<update id="delete" parameterType="string">
+		<![CDATA[
+			UPDATE kehu set kehu_del="1" WHERE kehu_no=#{kehu_no,jdbcType=VARCHAR} 
+		]]>
+	</update>
+	
+	<select id="queryById" parameterType="string" resultType="CustomerInfo">
+		<![CDATA[
+			select * from kehu where kehu_no=#{kehu_no}
+		]]>
+	</select>
+	
+	<!-- 传入实体查询信息 -->
+	<select id="queryBySome" parameterType="CustomerInfo" resultType="CustomerInfo">
+		<![CDATA[
+			SELECT * 
+			FROM kehu 
+			WHERE 1=1 AND kehu_del='0' 
+		]]>
+			<if test="kehu_py != null"> AND kehu_py like '%${kehu_py}%' </if>
+			<if test="kehu_name != null"> AND kehu_name like '%${kehu_name}%' </if>
+			<if test="lxr != null"> AND lxr like '%${lxr}%' </if>
+			<if test="tel != null"> AND tel like '%${tel}%' </if>
+	</select>
+	
+	<!-- 查询新增和更新时候 配件名称和类别是否已经存在 -->
+	<select id="queryRepeat" parameterType="CustomerInfo" resultType="CustomerInfo">
+		<![CDATA[
+			SELECT * 
+			FROM kehu 
+			WHERE 1=1 AND kehu_del='0' 
+		]]>
+		<if test="kehu_no != null"><![CDATA[ AND kehu_no<>#{kehu_no} ]]> </if>
+		<if test="kehu_name != null"> AND kehu_name=#{kehu_name} </if>
+	</select>
+    
+</mapper>

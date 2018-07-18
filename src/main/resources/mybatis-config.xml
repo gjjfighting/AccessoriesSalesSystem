@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration  
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">  
+      
+<configuration>
+    <settings>
+        <setting name="defaultExecutorType" value="BATCH"/>
+    </settings>
+    
+    <!-- 注册mybatis插件 -->
+    <!-- <plugins>
+        mysql分页插件
+        <plugin interceptor="com.rvho.mybatis.interceptor.MybatisPageInterceptor">
+            <property name="databaseType" value="mysql"/>
+        </plugin>
+    </plugins> -->
+    
+    <!-- 全局别名设置，在映射文件(xml)中只需写别名(alias)，而不必写出整个类路径  -->  
+    <typeAliases>         
+         
+         <typeAlias type="kehaofei.com.sm.model.GoodsInfoModel" alias="GoodsInfo"/>
+         <typeAlias type="kehaofei.com.sm.model.CustomerInfoModel" alias="CustomerInfo"/>
+         <typeAlias type="kehaofei.com.sm.model.SalesTicketInfoModel" alias="SalesTicketInfo"/>
+         <typeAlias type="kehaofei.com.sm.model.SalesTicketDetailsModel" alias="SalesTicketDetails"/>
+         
+    </typeAliases>
+    
+    <!-- mybatis映射文件依赖路径 -->
+    <mappers>          
+        
+        <mapper resource="kehaofei/com/sm/mapping/GoodsInfoMapper.xml" />
+        <mapper resource="kehaofei/com/sm/mapping/CustomerInfoMapper.xml" />
+        <mapper resource="kehaofei/com/sm/mapping/SalesTicketInfoMapper.xml" />
+        <mapper resource="kehaofei/com/sm/mapping/SalesTicketDetailsMapper.xml" />
+    </mappers>
+</configuration>
